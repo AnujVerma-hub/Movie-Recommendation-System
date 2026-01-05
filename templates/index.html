@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/home.css">   
+</head>
+<body>
+    <div class="hero-section">
+        <h1>Discover Movies You'll Love</h1>
+        <p>Search, explain, and chat about movies with everyone.</p>
+
+        <form action="/search" method="get" class="hero-search">
+            <input type="text" name="query" placeholder="Search movies, genres, actors....">
+            <button type="submit">Explore</button>
+        </form>
+
+        <a href="/global_chat" class="hero-chat">Instictive Global Chat</a>
+    </div>
+
+
+    <div class="top-movies-section">
+        <h2 class="section-title"> Top Movies</h2>
+
+        <div class="top-movies-wrapper">
+            <button class="scroll-btn left" id="leftbtn">&#10094;</button>
+            <div class="movie-grid"  id="movieGrid">
+                {% for movie in top_movies %}
+                <div class="movie-card">
+                    <a href="/movie/{{movie.id}}">
+                        <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path}}" alt="{{ movie.title}}" style="width: 100%;height: 260px; object-fit: cover;">
+                
+                    </a>
+                    <p class="movie-title">{{movie.title }}</p>
+                </div>
+                {% endfor %}
+            </div>
+            <button class="scroll-btn right" id="rightbtn">&#10095;</button>
+        </div>
+
+        <h2 class="section-title"> Action Movies</h2>
+
+        <div class="top-movies-wrapper">
+            <button class="scroll-btn left" id="leftbtn">&#10094;</button>
+            <div class="movie-grid"  id="movieGrid">
+                {% for movie in action_movies %}
+                <div class="movie-card">
+                    <a href="/movie/{{movie.id}}">
+                        <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path}}" alt="{{ movie.title}}" style="width: 100%;height: 260px; object-fit: cover;">
+                
+                    </a>
+                    <p class="movie-title">{{movie.title }}</p>
+                </div>
+                {% endfor %}
+            </div>
+            <button class="scroll-btn right" id="rightbtn">&#10095;</button>
+        </div>
+
+        <h2 class="section-title"> Comedy Movies</h2>
+
+        <div class="top-movies-wrapper">
+            <button class="scroll-btn left" id="leftbtn">&#10094;</button>
+            <div class="movie-grid"  id="movieGrid">
+                {% for movie in comedy_movies %}
+                <div class="movie-card">
+                    <a href="/movie/{{movie.id}}">
+                        <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path}}" alt="{{ movie.title}}" style="width: 100%;height: 260px; object-fit: cover;">
+                
+                    </a>
+                    <p class="movie-title">{{movie.title }}</p>
+                </div>
+                {% endfor %}
+            </div>
+            <button class="scroll-btn right" id="rightbtn">&#10095;</button>
+        </div>
+        <h2 class="section-title"> Drama Movies</h2>
+
+        <div class="top-movies-wrapper">
+            <button class="scroll-btn left" id="leftbtn">&#10094;</button>
+            <div class="movie-grid"  id="movieGrid">
+                {% for movie in drama_movies %}
+                <div class="movie-card">
+                    <a href="/movie/{{movie.id}}">
+                        <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path}}" alt="{{ movie.title}}" style="width: 100%;height: 260px; object-fit: cover;">
+                
+                    </a>
+                    <p class="movie-title">{{movie.title }}</p>
+                </div>
+                {% endfor %}
+            </div>
+            <button class="scroll-btn right" id="rightbtn">&#10095;</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded",() => {
+            const container = document.getElementById("movieGrid");
+            const leftbtn = document.getElementById("leftbtn");
+            const rightbtn = document.getElementById("rightbtn");
+
+            if (!container) {
+                console.error("movieGrid not found");
+                return;
+            }
+
+            leftbtn.addEventListener("click",() => {
+                container.scrollBy({left:-300,behavior: "smooth"});
+
+            });
+
+            rightbtn.addEventListener("click", () => {
+                container.scrollBy({left:300,behavior:"smooth"});
+            });
+        });
+    </script>
+    
+    
+
+
+    
+    
+</body>
+</html>

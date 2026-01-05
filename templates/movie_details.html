@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ movie.title }}</title>
+    <link rel="stylesheet" href="/static/css/movies.css">
+</head>
+<body>
+    <div class="background">
+        <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path}}" alt="big">
+        <div class="big-overlay"></div>
+    </div>
+
+    <div class="content-wrapper">
+        <div class="movie-card">
+            <img class="poster" src="https://image.tmdb.org/t/p/w500{{ movie.poster_path}}" alt="{{movie.title}}">
+
+            <div class="details">
+                <h2>{{movie.title}}</h2>
+                <div class="movie-divider"></div>
+                <div class="meta">
+                    <ul class="list">
+                        <li><strong>IMDb:</strong> {{ movie.imdb_rating }}</li>
+                        <li><strong>Release:</strong>{{ movie.release_date }} </li>
+                        <li><strong>Genre:</strong>{{ movie.genres }}</li>
+
+                    </ul>
+                </div>
+                <div class="divider"></div>
+
+                
+
+                
+            </div>
+        </div>
+        <div class="actions" >
+            <div class="watch-btn">
+                <strong> Available On:</strong>
+                <span>{{ movie.where_to_watch }}</span>
+            </div>
+        </div>
+        
+    </div>
+    <div class="plot-details">
+        <div class="plot">
+            <h2>Plot</h2>
+            <span>{{ movie.overview}}</span>
+        </div>
+    </div>
+    <section class="recommendations">
+        <h2>Recommended</h2>
+        <div class="rec-grid">
+            {% for movie in recommended %}
+            <a href="/movie/{{movie.id}}">
+                <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path}}">
+                
+            
+            </a>
+            {% endfor %}
+        </div>
+    </section>
+    <a href="/movie/{{movie.id}}/chat" class="chat-icon">	&#x1F4AC Movie Chat</a>
+
+    
+    <a href="/" style="color: ghostwhite;"> Back to Home</a>
+</body>
+</html>

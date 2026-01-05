@@ -1,0 +1,8 @@
+.env
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+datasets/
+models/
+indexs/
+rag_env/

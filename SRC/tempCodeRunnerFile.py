@@ -1,0 +1,1 @@
+user_item_matrix = df.pivot_table(index="user_id",columns="title", values="user_rating").fillna(0)

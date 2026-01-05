@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ movie.title }} | Movie Chat</title>
+    <link rel="stylesheet" href="/static/css/movie_chat.css">
+</head>
+<body>
+
+    <div class="chat-page">
+
+        <div class="chat-header">
+            <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path}}" alt="poster">
+            <div class="movie-info">
+                <h2> {{ movie.title }}</h2>
+                <p> {{ movie.genres }}</p>
+                <span>&#127775; {{ movie.imdb_rating }}</span>
+            </div>
+        </div>
+        <div class="chat-box" id="chat-box">
+            {% if response %}
+                <div class="chat-message assistant">
+                    {{ response}}
+                </div>
+            {% endif %}
+
+        </div>
+
+
+        <form class="chat-input" method="POST" action="/movie/{{movie_id}}/chat">
+            <input type="text" name="message" placeholder="Ask about this movies..." required>
+            <button type="submit">Send</button>
+        </form>
+    </div>
+    
+</body>
+</html>
