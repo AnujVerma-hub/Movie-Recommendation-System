@@ -4,7 +4,7 @@ from sklearn.metrics.pairwise import cosine_similarity
 import pickle
 from scipy.sparse import csr_matrix
 
-DATA_PATH = "datasets/movie_with_user_rating.csv"
+DATA_PATH = "datasets/user_ratings_enriched.csv"
 MODEL_DIR = "models"
 
 
@@ -23,18 +23,18 @@ def preprocess_data(df):
     user_item_matrix = df.pivot_table(index="user_id",columns="title", values="user_rating").fillna(0)
     sparse_matrix = csr_matrix(user_item_matrix.values)
 
-    user_similarity = cosine_similarity(sparse_matrix, dense_output=False)
+    user_similarity = cosine_similarity(sparse_matrix)
 
-    item_similarity = cosine_similarity(sparse_matrix.T, dense_output=False)
+    item_similarity = cosine_similarity(sparse_matrix.T)
 
     return user_similarity, item_similarity
 
 
 def save_model(user_similarity, item_similarity):
 
-    pickle.dump(user_similarity, open(os.path.join(MODEL_DIR, "user_similarity.pkl"), "wb"))
+    pickle.dump(user_similarity, open(os.path.join(MODEL_DIR, "user_similarity_2.pkl"), "wb"))
 
-    pickle.dump(item_similarity, open(os.path.join(MODEL_DIR, "item_similarity.pkl"), "wb"))
+    pickle.dump(item_similarity, open(os.path.join(MODEL_DIR, "item_similarity_2.pkl"), "wb"))
 
     print("All file saved ")
 
@@ -44,7 +44,6 @@ def main():
     print("Starting vectorization")
 
     df = load_data(DATA_PATH)
-    df = df.head(2000)
     user_similarity, item_similarity = preprocess_data(df)
 
     save_model(user_similarity, item_similarity)

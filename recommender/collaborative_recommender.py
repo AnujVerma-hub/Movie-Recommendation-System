@@ -6,28 +6,29 @@ from scipy.sparse import csr_matrix
 import pickle
 
 
-df = pd.read_csv("datasets/movie_with_user_rating.csv")
-df=df.head(2000)
+df = pd.read_csv("datasets/user_ratings_enriched.csv")
 print(df.shape)
 
-#with open("models/user_similarity.pkl", "rb") as f:
-    #similar_movie = pickle.load(f)
+with open("models/user_similarity_2.pkl","rb") as f:
+   user_similarity= pickle.load(f)
 
-#with open("models/item_similarity.pkl", "rb") as f:
-    #similar_item = pickle.load(f)
-    
+with open("models/item_similarity_2.pkl","rb") as f:
+    item_similarity = pickle.load(f)
     
 required_cols = ["user_id" ,"title", "user_rating"]
 if not all(col in df.columns for col in required_cols):
     raise ValueError(f"datsets must contain{required_cols}")
     
-user_item_matrix = df.pivot_table(index="user_id",columns="title", values="user_rating").fillna(0)
-print(user_item_matrix.shape)
+user_item_matrix = df.pivot_table(index="user_id",columns="title", values="user_rating",aggfunc='mean').fillna(0)
+print("user_item_matrix shape",user_item_matrix.shape)
 sparse_matrix = csr_matrix(user_item_matrix.values)
 
-user_similarity = cosine_similarity(sparse_matrix, dense_output=True)
+print("type user_similarity_2",type(user_similarity))
+print("similar user shape",getattr(user_similarity,"shape","No SHape"))
 
-item_similarity = cosine_similarity(sparse_matrix.T, dense_output=True)
+print("type item_similarity_2",type(item_similarity))
+print("similar item shape",getattr(item_similarity,"shape","No SHape"))
+
 
 
 
@@ -39,7 +40,7 @@ def recommend_for_user(user_id, num_recommmendations=5):
         print(f" user {user_id} not found in the dataset")
         return pd.DataFrame()
     
-    similar_users = user_similarity_df[user_id].sort_values(ascending=False)[1:6].index
+    similar_users = user_similarity_df.loc[user_id].sort_values(ascending=False).iloc[1:num_recommmendations+1].index
     similar_user_ratings = df[df['user_id'].isin(similar_users)]
 
     avg_ratings = (similar_user_ratings.groupby('title')["user_rating"].mean().sort_values(ascending=False))
