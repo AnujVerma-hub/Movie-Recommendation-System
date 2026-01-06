@@ -8,4 +8,6 @@ scikit-learn
 requests
 python-multipart
 gunicorn
-
+sentence-transformers==2.2.2
+torch==2.1.2
+transformers==4.36.2
