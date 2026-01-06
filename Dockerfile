@@ -1,10 +1,10 @@
 FROM python:3.11-slim
 WORKDIR /app
-COPY requirements.txt .
+COPY requirements.txt /app/
 
 RUN pip install
 
-COPY ..
+COPY ./app/
 
 EXPOSE 8000
 
