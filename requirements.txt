@@ -9,6 +9,6 @@ requests
 python-multipart
 gunicorn
 
-torch==2.1.2
-transformers==4.36.2
-sentence-transformers==2.2.2
+torch
+transformers
+sentence-transformers
