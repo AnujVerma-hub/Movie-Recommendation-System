@@ -10,6 +10,5 @@ python-multipart
 gunicorn
 faiss-cpu
 
-torch
 transformers
 sentence-transformers
