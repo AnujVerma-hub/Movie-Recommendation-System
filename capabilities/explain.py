@@ -14,9 +14,9 @@ def explain_rcommendation(base_movie:dict,recommended_movies:list) -> str:
     Does NOT rcommend new movies.
     """
 
-    title = base_movie.get("title","N\A")
-    genres = base_movie.get("geners","N\A")
-    overview = base_movie.get("overview", "N\A")
+    title = base_movie.get("title","None")
+    genres = base_movie.get("geners","None")
+    overview = base_movie.get("overview", "None")
 
 
     base_block = f"""

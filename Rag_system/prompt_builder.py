@@ -58,11 +58,11 @@ def format_context(docs):
         if not isinstance(d,dict):
             continue
         chunk = (
-            "Title: " + str(d.get("title","N\A")) + "\n"
-            "Genres: " + str(d.get("genre","N\A")) + "\n"
-            "IMDB Rating: " + str(d.get("imdb_rating","N\A")) + "\n"
-            "Available on: " + str(d.get("where_to_watch","N\A")) + "\n"
-            "Over-view: " + str(d.get("overview","N\A"))
+            "Title: " + str(d.get("title","None")) + "\n"
+            "Genres: " + str(d.get("genre","None")) + "\n"
+            "IMDB Rating: " + str(d.get("imdb_rating","None")) + "\n"
+            "Available on: " + str(d.get("where_to_watch","None")) + "\n"
+            "Over-view: " + str(d.get("overview","None"))
 
         )
 
