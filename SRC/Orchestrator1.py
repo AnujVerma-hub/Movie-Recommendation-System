@@ -8,13 +8,22 @@ from capabilities.top_movies import fetch_movies
 from SRC.movie_mapper import MovieMapper
 
 
-movie_mapper = MovieMapper("datasets/imdb_enriched.csv")
+
+_mapper = None
+
+def get_mapper():
+    global _mapper
+    if _mapper is None:
+        _mapper = MovieMapper("datasets/imdb_enriched.csv")
+
+    return _mapper
 
 
 
 def build_movie_context(movie_id):
+        mapper = get_mapper()
         
-        movie = movie_mapper.get_movie_by_id(movie_id)
+        movie = mapper.get_movie_by_id(movie_id)
 
         if movie is None:
             return None

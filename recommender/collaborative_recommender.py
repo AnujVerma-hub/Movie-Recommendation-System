@@ -6,36 +6,60 @@ from scipy.sparse import csr_matrix
 import pickle
 
 
-df = pd.read_csv("datasets/user_ratings_enriched.csv")
-print(df.shape)
-
-with open("models/user_similarity_2.pkl","rb") as f:
-   user_similarity= pickle.load(f)
-
-with open("models/item_similarity_2.pkl","rb") as f:
-    item_similarity = pickle.load(f)
-    
-required_cols = ["user_id" ,"title", "user_rating"]
-if not all(col in df.columns for col in required_cols):
-    raise ValueError(f"datsets must contain{required_cols}")
-    
-user_item_matrix = df.pivot_table(index="user_id",columns="title", values="user_rating",aggfunc='mean').fillna(0)
-print("user_item_matrix shape",user_item_matrix.shape)
-sparse_matrix = csr_matrix(user_item_matrix.values)
-
-print("type user_similarity_2",type(user_similarity))
-print("similar user shape",getattr(user_similarity,"shape","No SHape"))
-
-print("type item_similarity_2",type(item_similarity))
-print("similar item shape",getattr(item_similarity,"shape","No SHape"))
+_df = None
+_user_similarity = None
+_item_similarity = None
 
 
+def get_dataframe():
+    global _df
+    if _df is None:
+        _df = pd.read_csv("datasets/user_ratings_enriched.csv")
+    return _df
 
 
-user_similarity_df = pd.DataFrame(user_similarity,index=user_item_matrix.index, columns=user_item_matrix.index)
-item_similarity_df = pd.DataFrame(item_similarity, index=user_item_matrix.columns, columns=user_item_matrix.columns)
+def get_user_similarity():
+    global _user_similarity
+    if _user_similarity is None:
+        with open("models/user_similarity_2.pkl","rb") as f:
+            _user_similarity= pickle.load(f)
+
+    return _user_similarity
+
+
+def get_item_similarity():
+    global _item_similarity
+    if _item_similarity is None:
+        with open("models/item_similarity_2.pkl","rb") as f:
+            _item_similarity = pickle.load(f)
+
+    return _item_similarity
+
+
+
+
+
+
+
+
 
 def recommend_for_user(user_id, num_recommmendations=5):
+    df = get_dataframe()
+    user_similarity = get_user_similarity()
+    item_similarity = get_item_similarity()
+
+    required_cols = ["user_id" ,"title", "user_rating"]
+    if not all(col in df.columns for col in required_cols):
+        raise ValueError(f"datsets must contain{required_cols}")
+    
+    user_item_matrix = df.pivot_table(index="user_id",columns="title", values="user_rating",aggfunc='mean').fillna(0)
+    sparse_matrix = csr_matrix(user_item_matrix.values)
+
+
+    user_similarity_df = pd.DataFrame(user_similarity,index=user_item_matrix.index, columns=user_item_matrix.index)
+    item_similarity_df = pd.DataFrame(item_similarity, index=user_item_matrix.columns, columns=user_item_matrix.columns)
+
+
     if user_id not in user_similarity_df.index:
         print(f" user {user_id} not found in the dataset")
         return pd.DataFrame()
@@ -52,6 +76,19 @@ def recommend_for_user(user_id, num_recommmendations=5):
     return recs.sort_values(by="predicted_rating",ascending=False)
 
 def recommend_similar_movies(Movie_title, num_recommendatios=5):
+    df = get_dataframe()
+    user_similarity = get_user_similarity()
+    item_similarity = get_item_similarity()
+
+    required_cols = ["user_id" ,"title", "user_rating"]
+    if not all(col in df.columns for col in required_cols):
+        raise ValueError(f"datsets must contain{required_cols}")
+    
+    user_item_matrix = df.pivot_table(index="user_id",columns="title", values="user_rating",aggfunc='mean').fillna(0)
+    sparse_matrix = csr_matrix(user_item_matrix.values)
+
+    user_similarity_df = pd.DataFrame(user_similarity,index=user_item_matrix.index, columns=user_item_matrix.index)
+    item_similarity_df = pd.DataFrame(item_similarity, index=user_item_matrix.columns, columns=user_item_matrix.columns)
     if Movie_title not in item_similarity_df.index:
         print(f"{Movie_title} not found in dataset")
         return pd.DataFrame()

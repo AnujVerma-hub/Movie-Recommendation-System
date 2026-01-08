@@ -3,7 +3,9 @@ from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 import pandas as pd
+import uvicorn
 from main import router
+import os
 from capabilities.top_movies import fetch_movies
 from capabilities.search import search_movie
 from typing import Optional
@@ -25,13 +27,34 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 
 templates = Jinja2Templates(directory="templates")
 
-mapper = MovieMapper("datasets/imdb_enriched.csv")
-movies_df = pd.read_csv("datasets/imdb_enriched.csv")
 
-orch = MovieOrchestrator(movies_df)
 app.include_router(router)
+_movies_df = None
+_orch = None
+_mapper = None
+
+def get_movies_df():
+    global _movies_df
+    if _movies_df is None:
+        _movies_df = pd.read_csv("datasets/imdb_enriched.csv")
+
+    return _movies_df
+
+def get_mapper():
+    global _mapper
+    if _mapper is None:
+        _mapper = MovieMapper("datasets/imdb_enriched.csv")
+
+    return _mapper
 
 
+def get_orchestrator():
+    global _orch
+
+    if _orch is None:
+        movies_df = get_movies_df()
+        _orch =MovieOrchestrator(movies_df)
+    return _orch
 
 
 @app.get("/search",response_class=HTMLResponse)
@@ -39,6 +62,7 @@ def search_movie(request: Request,q:Optional[str]= None):
     if not q or q.strip() == "":
         movies = []
     else:
+        orch = get_orchestrator()
         movies = orch.search(q)
 
     return templates.TemplateResponse(
@@ -58,7 +82,7 @@ def home(request: Request):
     """
     Home page :show top movies amd search option
     """
-    
+    movies_df = get_movies_df()
 
     top_movies = fetch_movies(
             movies_df,
@@ -116,6 +140,8 @@ def global_chat_page(request:Request):
 @app.post("/chat/global",response_model=ChatResponse)
 def global_chat_api( chat:ChatRequest):
     user_message = chat.message
+    orch = get_orchestrator()
+    mapper = get_mapper()
 
     answer = orch.chat(user_message)
     return {"answer":answer}
@@ -123,6 +149,8 @@ def global_chat_api( chat:ChatRequest):
 @app.get("/movie/{id}/chat",response_class=HTMLResponse)
 @app.post("/movie/{id}/chat",response_class=HTMLResponse)
 async def movie_chat_page(request:Request,id:int):
+    orch = get_orchestrator()
+    mapper = get_mapper()
     movie = mapper.get_movie_by_id(id)
 
     response = None
