@@ -76,15 +76,15 @@ This keeps the repository lightweight and deployment-friendly
 ## 
 Tech Stack
 
--**python**
--**scikit-learn**
--**Pandas/Numpy**
--**Faiss**
--**hugging Face Hub**
--**Hugging Face Spaces**
--**LLMs (Mistral instruct)**
--**HTML/CSS(styling)**
--**FastAPI(App interface)**
+- **python**
+- **scikit-learn**
+- **Pandas/Numpy**
+- **Faiss**
+- **hugging Face Hub**
+- **Hugging Face Spaces**
+- **LLMs (Mistral instruct)**
+- **HTML/CSS(styling)**
+- **FastAPI(App interface)**
 
 ---
 
@@ -107,3 +107,4 @@ cd Movie-Recommendation-System
 pip install -r requirements.txt
 export HF_TOKEN=Your_token_here
 python app.py
+
