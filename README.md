@@ -8,7 +8,7 @@ This project is fully deployed using **Hugging Face Spaces**,
 with models and dataset hosted on **Hugging Face Hub**.
 
 ---
-## 👀; App Link
+## 🔗 App Link
 
 `https://huggingface.co/spaces/Anuj-Verma/MovieVerse`
 
@@ -116,6 +116,7 @@ export HF_TOKEN=Your_token_here
 
 python app.py
 ```
+
 
 
 
