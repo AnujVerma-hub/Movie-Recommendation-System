@@ -100,9 +100,10 @@ The application is deployed on **Hugging Face Spaces**.
 
 
 ## How to Run Locally
+```
+bash
 
-`bash
-git clone https://github.com/AnujVerma-hub/Movie-Recommendation-System` 
+git clone https://github.com/AnujVerma-hub/Movie-Recommendation-System
 
 cd Movie-Recommendation-System
 
@@ -111,6 +112,8 @@ pip install -r requirements.txt
 export HF_TOKEN=Your_token_here
 
 python app.py
+```
+
 
 
 
